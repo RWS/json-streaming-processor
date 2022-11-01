@@ -72,8 +72,7 @@ class JsonPathProcessor implements AutoCloseable {
         parser.nextToken();
         parser.skipChildren();
 
-        writer.writeFieldName(parser.getCurrentName());
-        writer.write(replacer);
+        writer.writeJsonElement(new JsonObjectElement<>(parser.getCurrentName(), replacer));
     }
 
     <T> void read(Class<T> clazz, Consumer<JsonObjectElement<T>> consumer) {
@@ -161,7 +160,7 @@ class JsonPathProcessor implements AutoCloseable {
             T item = iterator.next();
             R mapped = mapper.apply(item);
 
-            writer.writeInteger(mapped);
+            writer.write(mapped);
         }
 
         this.stopIteration();
@@ -180,7 +179,7 @@ class JsonPathProcessor implements AutoCloseable {
         JsonToken endArray = JsonToken.END_ARRAY;
 
         path.updatePath(endArray);
-        writer.writeToken(endArray);
+        writer.writeToken();
     }
 
     /**
@@ -204,7 +203,7 @@ class JsonPathProcessor implements AutoCloseable {
 
     JsonToken writeNextToken() {
         JsonToken token = next();
-        writeToken(token);
+        writeToken();
 
         return token;
     }
@@ -231,8 +230,8 @@ class JsonPathProcessor implements AutoCloseable {
         }
     }
 
-    void writeToken(JsonToken token) {
-        writer.writeToken(token);
+    void writeToken() {
+        writer.writeToken();
     }
 
     boolean checkIsCurrentPath(PathMatcher pathMatcher) {
@@ -246,18 +245,12 @@ class JsonPathProcessor implements AutoCloseable {
     private void ensureStartOfArrayIsWritten() {
         ensureCurrentTokenIsOfTypeStartArray();
 
-        writer.writeToken(JsonToken.START_ARRAY);
+        writer.writeToken();
     }
 
     void ensureCurrentTokenIsOfTypeStartArray() {
         if (!parser.isExpectedStartArrayToken()) {
             throw new UnsupportedOperationException("Expected position was at start of array, found " + parser.currentToken().name());
-        }
-    }
-
-    void ensureCurrentTokenIsOfTypeStartObject() {
-        if (!parser.isExpectedStartObjectToken()) {
-            throw new UnsupportedOperationException("Expected position was at start of object, found " + parser.currentToken().name());
         }
     }
 

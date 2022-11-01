@@ -81,7 +81,7 @@ public class JsonVisitingProcessor implements AutoCloseable {
                 visitor.beforeLeaving(processor.getWriter());
             }
 
-            processor.writeToken(jsonToken);
+            processor.writeToken();
         }
         visitor.leaving(processor.getWriter());
     }
