@@ -75,7 +75,7 @@ class JsonPathProcessor implements AutoCloseable {
         writer.writeJsonElement(new JsonObjectElement<>(parser.getCurrentName(), replacer));
     }
 
-    <T> void read(Class<T> clazz, Consumer<JsonObjectElement<T>> consumer) {
+    <T> void peek(Class<T> clazz, Consumer<JsonObjectElement<T>> consumer) {
         JsonObjectElement<T> retrieved = this.retrieve(clazz);
         writer.writeJsonElement(retrieved);
         consumer.accept(retrieved);
@@ -86,7 +86,7 @@ class JsonPathProcessor implements AutoCloseable {
         consumer.accept(retrieved);
     }
 
-    <T> void readAll(Class<T> clazz, Consumer<JsonArrayElement<T>> consumer) {
+    <T> void peekAll(Class<T> clazz, Consumer<JsonArrayElement<T>> consumer) {
         JsonArrayElement<T> retrieved = this.retrieveAll(clazz);
         writer.writeJsonElement(retrieved);
         consumer.accept(retrieved);

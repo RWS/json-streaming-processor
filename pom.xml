@@ -7,11 +7,30 @@
     <groupId>com.sdl.lt.lc.json.streaming</groupId>
     <artifactId>json-streaming-processor</artifactId>
     <version>0.0.1</version>
+    <name>json-streaming-processor</name>
+    <description>JSON Streaming Processor backed by Jackson with an easier to understand interface</description>
+    <url>https://github.com/RWS/json-streaming-processor</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Andrei Negruti</name>
+            <email>anegruti@rws.com</email>
+            <organization>RWS</organization>
+            <organizationUrl>www.rws.com</organizationUrl>
+        </developer>
+    </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:sdl/RWS/json-streaming-processor.git</connection>
-        <developerConnection>scm:git:git@github.com:sdl/RWS/json-streaming-processor.git</developerConnection>
-        <url>git@github.com:sdl/RWS/json-streaming-processor.git</url>
+        <connection>scm:git:git@github.com:RWS/json-streaming-processor.git</connection>
+        <developerConnection>scm:git:git@github.com:RWS/json-streaming-processor.git</developerConnection>
+        <url>git@github.com:RWS/json-streaming-processor.git</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -114,6 +133,26 @@
                         <version>${junit.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>

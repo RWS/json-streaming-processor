@@ -92,10 +92,10 @@ public class JsonProcessorBuilder implements AutoCloseable {
      * @see JsonElementTransformer
      * @see JsonVisitor
      */
-    public <T> JsonElementTransformer read(PathMatcher pathMatcher, Class<T> clazz, Consumer<JsonObjectElement<T>> consumer) {
+    public <T> JsonElementTransformer peek(PathMatcher pathMatcher, Class<T> clazz, Consumer<JsonObjectElement<T>> consumer) {
         return new JsonElementTransformer(
                 pathMatcher,
-                () -> this.processor.read(clazz, consumer)
+                () -> this.processor.peek(clazz, consumer)
         );
     }
 
@@ -111,10 +111,10 @@ public class JsonProcessorBuilder implements AutoCloseable {
      * @see JsonElementTransformer
      * @see JsonVisitor
      */
-    public <T> JsonElementTransformer readAll(PathMatcher pathMatcher, Class<T> clazz, Consumer<JsonArrayElement<T>> consumer) {
+    public <T> JsonElementTransformer peekAll(PathMatcher pathMatcher, Class<T> clazz, Consumer<JsonArrayElement<T>> consumer) {
         return new JsonElementTransformer(
                 pathMatcher,
-                () -> this.processor.readAll(clazz, consumer)
+                () -> this.processor.peekAll(clazz, consumer)
         );
     }
 

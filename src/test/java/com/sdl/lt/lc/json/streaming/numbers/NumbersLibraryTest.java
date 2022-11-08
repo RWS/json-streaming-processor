@@ -60,7 +60,7 @@ public class NumbersLibraryTest {
         AtomicReference<String> usernameRef = new AtomicReference<>();
         try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
-                    JsonVisitor.withTransformer(builder.read(USERNAME_PATH, String.class, s -> usernameRef.set(s.getElement())))
+                    JsonVisitor.withTransformer(builder.peek(USERNAME_PATH, String.class, s -> usernameRef.set(s.getElement())))
             );
         }
 
@@ -95,7 +95,7 @@ public class NumbersLibraryTest {
         List<Integer> numbersArray = new ArrayList<>();
         try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
-                    JsonVisitor.withTransformer(builder.readAll(NUMBERS_PATH, Integer.class, nrs -> numbersArray.addAll(nrs.getElement())))
+                    JsonVisitor.withTransformer(builder.peekAll(NUMBERS_PATH, Integer.class, nrs -> numbersArray.addAll(nrs.getElement())))
             );
         }
 
