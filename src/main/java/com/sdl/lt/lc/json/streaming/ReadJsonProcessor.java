@@ -22,23 +22,22 @@ public class ReadJsonProcessor implements AutoCloseable {
      *
      * @param pathMatcher the {@link PathMatcher} to stop at (needs to stop at start of an array)
      * @param clazz hints towards the type of objects we will find inside the array
+     * @param <T> type of read element
      * @return {@link Iterator} iterator over objects of type {@link T}
      * @throws UnsupportedOperationException when next token read after finding the path is not START_OBJECT
      *
-     * @implNote Before starting to read an iterator the position of the cursor has to be on START_OBJECT
+     * Before starting to read an iterator the position of the cursor has to be on START_OBJECT
      * After getting an iterator we update the path by closing the START_OBJECT we added before getting the iterator
      * and we also close the START_ARRAY where we opened the array.
      *
-     * <p>
-     *     <b>CAUTION:</b>
-     *     <p>The returned iterator must be used as follows:</p>
-     *     <pre>{@code
-     *         while (iterator.hasNext())
-     *             iterator.next();
-     *     }</pre>
+     * CAUTION:
+     * The returned iterator must be used as follows:
+     * <pre>{@code
+     *     while (iterator.hasNext())
+     *         iterator.next();
+     * }</pre>
      *
-     *     <b>In other words ensure that .hasNext() is called one more time after all elements have been iterated over</b>
-     * </p>
+     * In other words ensure that .hasNext() is called one more time after all elements have been iterated over
      */
     public <T> Iterator<T> readValues(PathMatcher pathMatcher, Class<T> clazz) {
         processor.skipUntilPathOrEnd(pathMatcher);

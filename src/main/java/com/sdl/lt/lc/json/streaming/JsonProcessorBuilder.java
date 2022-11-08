@@ -17,7 +17,7 @@ import java.util.function.Function;
  * There is no other way to use any of those processors but through this builder.
  * If a builder is created it can be used to create {@link JsonElementTransformer} that refer the processor
  *
- * @apiNote the {@link JsonProcessorBuilder} implements {@link AutoCloseable}. It is recommended you use this class in
+ * The {@link JsonProcessorBuilder} implements {@link AutoCloseable}. It is recommended you use this class in
  * conjunction with a try-with-resources statement
  * @author anegruti
  * @since 5/24/2022
@@ -55,7 +55,7 @@ public class JsonProcessorBuilder implements AutoCloseable {
      * The null {@link OutputStream} is provided to ensure that any potential writes will be discarded
      *
      * @param inputStream the {@link InputStream} from which the JSON will be read
-     * @param mapper
+     * @param mapper the specific {@link ObjectMapper} to be used
      * @return the {@link ReadJsonProcessor} used to read parts of a JSON and skipping the rest
      */
     public static ReadJsonProcessor initProcessor(InputStream inputStream, ObjectMapper mapper) {
@@ -67,6 +67,7 @@ public class JsonProcessorBuilder implements AutoCloseable {
     /**
      * Returns a {@link JsonElementTransformer} that will replace the element found at the provided path
      *
+     * @param <T> object type of replacer
      * @param pathMatcher the path to be used when finding where to apply the executor
      * @param replacer object to be used for replacement
      * @return a {@link JsonElementTransformer}
@@ -87,6 +88,7 @@ public class JsonProcessorBuilder implements AutoCloseable {
      *
      * @param pathMatcher the path to be used when finding where to apply the executor
      * @param clazz the class of {@link T}
+     * @param <T> object type of peeked element
      * @param consumer the {@link Consumer} that will be used to consume the {@link JsonObjectElement} found
      * @return a {@link JsonElementTransformer}
      * @see JsonElementTransformer
@@ -106,6 +108,7 @@ public class JsonProcessorBuilder implements AutoCloseable {
      *
      * @param pathMatcher the path to be used when finding where to apply the executor
      * @param clazz the class of {@link T}
+     * @param <T> object type of peeked element
      * @param consumer the {@link Consumer} that will be used to consume the {@link JsonArrayElement} found
      * @return a {@link JsonElementTransformer}
      * @see JsonElementTransformer
@@ -125,6 +128,7 @@ public class JsonProcessorBuilder implements AutoCloseable {
      *
      * @param pathMatcher the path to be used when finding where to apply the executor
      * @param clazz the class of {@link T}
+     * @param <T> object type of consumed element
      * @param consumer the {@link Consumer} that will be used to consume the {@link JsonObjectElement} found
      * @return a {@link JsonElementTransformer}
      * @see JsonElementTransformer
@@ -143,6 +147,7 @@ public class JsonProcessorBuilder implements AutoCloseable {
      *
      * @param pathMatcher the path to be used when finding where to apply the executor
      * @param clazz the class of {@link T}
+     * @param <T> object type of consumed element
      * @param consumer the {@link Consumer} that will be used to consume the {@link JsonArrayElement} found
      * @return a {@link JsonElementTransformer}
      * @see JsonElementTransformer
@@ -161,6 +166,8 @@ public class JsonProcessorBuilder implements AutoCloseable {
      *
      * @param pathMatcher the path to be used when finding where to apply the executor
      * @param clazz the class of {@link T}
+     * @param <T> object type of consumed element
+     * @param <R> object type of result element
      * @param mapper the {@link Function} used to map from {@link T} to {@link R}
      * @return a {@link JsonElementTransformer}
      * @see JsonElementTransformer
