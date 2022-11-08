@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * @since 5/24/2022
  */
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class JsonVisitingProcessor implements AutoCloseable {
+public class VisitJsonProcessor implements AutoCloseable {
 
     private static final int INITIAL_COUNTER_VALUE = 1;
     private final JsonPathProcessor processor;
@@ -171,7 +171,7 @@ public class JsonVisitingProcessor implements AutoCloseable {
          * @param visitor the {@link JsonVisitor} used while travelling over the JSON object
          * @implNote We first reset the {@link JsonPathIterator#hasNext} to ensure that when we call {@link JsonPathIterator#hasNext()}
          * again we move the cursor forward.
-         * After that we will call the {@link JsonVisitingProcessor#visitObject(JsonVisitor)} method provided as a consumer
+         * After that we will call the {@link VisitJsonProcessor#visitObject(JsonVisitor)} method provided as a consumer
          * with the provided {@link JsonVisitor}
          */
         @Override

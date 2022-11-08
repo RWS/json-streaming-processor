@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Class that provides access to either a {@link JsonVisitingProcessor} or {@link JsonReadingProcessor}
+ * Class that provides access to either a {@link VisitJsonProcessor} or {@link ReadJsonProcessor}
  * There is no other way to use any of those processors but through this builder.
  * If a builder is created it can be used to create {@link JsonElementTransformer} that refer the processor
  *
@@ -27,8 +27,8 @@ public class JsonProcessorBuilder implements AutoCloseable {
 
     private final JsonPathProcessor processor;
 
-    public static JsonProcessorBuilder initWritingProcessor(InputStream inputStream, OutputStream outputStream) {
-        return initWritingProcessor(inputStream, outputStream, new ObjectMapper());
+    public static JsonProcessorBuilder initBuilder(InputStream inputStream, OutputStream outputStream) {
+        return initBuilder(inputStream, outputStream, new ObjectMapper());
     }
 
     /**
@@ -38,30 +38,30 @@ public class JsonProcessorBuilder implements AutoCloseable {
      * @param inputStream the {@link InputStream} from which the JSON will be read
      * @param outputStream the {@link OutputStream} to which the JSON will be written
      * @param mapper the {@link }
-     * @return the {@link JsonProcessorBuilder} used to create a {@link JsonVisitingProcessor} and to create Transformer's
+     * @return the {@link JsonProcessorBuilder} used to create a {@link VisitJsonProcessor} and to create Transformer's
      */
-    public static JsonProcessorBuilder initWritingProcessor(InputStream inputStream, OutputStream outputStream, ObjectMapper mapper) {
+    public static JsonProcessorBuilder initBuilder(InputStream inputStream, OutputStream outputStream, ObjectMapper mapper) {
         JsonPathProcessor processor = JsonPathProcessor.init(inputStream, outputStream, mapper);
 
         return new JsonProcessorBuilder(processor);
     }
 
-    public static JsonReadingProcessor initReadingProcessor(InputStream inputStream) {
-        return initReadingProcessor(inputStream, new ObjectMapper());
+    public static ReadJsonProcessor initProcessor(InputStream inputStream) {
+        return initProcessor(inputStream, new ObjectMapper());
     }
 
     /**
-     * Initialises a {@link JsonReadingProcessor} by creating a {@link JsonPathProcessor} with a null {@link OutputStream}
+     * Initialises a {@link ReadJsonProcessor} by creating a {@link JsonPathProcessor} with a null {@link OutputStream}
      * The null {@link OutputStream} is provided to ensure that any potential writes will be discarded
      *
      * @param inputStream the {@link InputStream} from which the JSON will be read
      * @param mapper
-     * @return the {@link JsonReadingProcessor} used to read parts of a JSON and skipping the rest
+     * @return the {@link ReadJsonProcessor} used to read parts of a JSON and skipping the rest
      */
-    public static JsonReadingProcessor initReadingProcessor(InputStream inputStream, ObjectMapper mapper) {
+    public static ReadJsonProcessor initProcessor(InputStream inputStream, ObjectMapper mapper) {
         JsonPathProcessor processor = JsonPathProcessor.init(inputStream, OutputStream.nullOutputStream(), mapper);
 
-        return new JsonReadingProcessor(processor);
+        return new ReadJsonProcessor(processor);
     }
 
     /**
@@ -174,13 +174,13 @@ public class JsonProcessorBuilder implements AutoCloseable {
     }
 
     /**
-     * @return a {@link JsonVisitingProcessor} used to visit a JSON provided an implementation of a {@link JsonVisitor}
-     * @see JsonVisitingProcessor
+     * @return a {@link VisitJsonProcessor} used to visit a JSON provided an implementation of a {@link JsonVisitor}
+     * @see VisitJsonProcessor
      * @see JsonElementTransformer
      * @see JsonVisitor
      */
-    public JsonVisitingProcessor getVisitingProcessor() {
-        return new JsonVisitingProcessor(processor);
+    public VisitJsonProcessor build() {
+        return new VisitJsonProcessor(processor);
     }
 
     @Override

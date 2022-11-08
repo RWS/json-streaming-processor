@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @since 5/25/2022
  */
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class JsonReadingProcessor implements AutoCloseable {
+public class ReadJsonProcessor implements AutoCloseable {
 
     private final JsonPathProcessor processor;
 
@@ -40,7 +40,7 @@ public class JsonReadingProcessor implements AutoCloseable {
      *     <b>In other words ensure that .hasNext() is called one more time after all elements have been iterated over</b>
      * </p>
      */
-    public <T> Iterator<T> readValuesAs(PathMatcher pathMatcher, Class<T> clazz) {
+    public <T> Iterator<T> readValues(PathMatcher pathMatcher, Class<T> clazz) {
         processor.skipUntilPathOrEnd(pathMatcher);
 
         if (!hasNext()) {

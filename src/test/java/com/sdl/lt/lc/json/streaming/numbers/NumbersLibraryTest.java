@@ -1,8 +1,8 @@
 package com.sdl.lt.lc.json.streaming.numbers;
 
 import com.sdl.lt.lc.json.streaming.JsonProcessorBuilder;
-import com.sdl.lt.lc.json.streaming.JsonVisitingProcessor;
 import com.sdl.lt.lc.json.streaming.JsonVisitor;
+import com.sdl.lt.lc.json.streaming.VisitJsonProcessor;
 import com.sdl.lt.lc.json.streaming.matchers.PathMatcher;
 import com.sdl.lt.lc.json.streaming.matchers.PathMatcherBuilder;
 import com.sdl.lt.lc.json.streaming.numbers.model.MyNumbers;
@@ -39,9 +39,9 @@ public class NumbersLibraryTest {
     @Test
     void shouldReplaceUsername() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonProcessorBuilder builder = JsonProcessorBuilder.initWritingProcessor(getNumbersFile(), outputStream);
+        JsonProcessorBuilder builder = JsonProcessorBuilder.initBuilder(getNumbersFile(), outputStream);
 
-        try (JsonVisitingProcessor visitingProcessor = builder.getVisitingProcessor()) {
+        try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
                     JsonVisitor.withTransformer(builder.replace(USERNAME_PATH, "newUsername"))
             );
@@ -55,10 +55,10 @@ public class NumbersLibraryTest {
     @Test
     void shouldReadUsernameAndWriteToOutputByDefault() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonProcessorBuilder builder = JsonProcessorBuilder.initWritingProcessor(getNumbersFile(), outputStream);
+        JsonProcessorBuilder builder = JsonProcessorBuilder.initBuilder(getNumbersFile(), outputStream);
 
         AtomicReference<String> usernameRef = new AtomicReference<>();
-        try (JsonVisitingProcessor visitingProcessor = builder.getVisitingProcessor()) {
+        try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
                     JsonVisitor.withTransformer(builder.read(USERNAME_PATH, String.class, s -> usernameRef.set(s.getElement())))
             );
@@ -72,10 +72,10 @@ public class NumbersLibraryTest {
     @Test
     void shouldConsumeUsernameAndNotWriteToOutputStream() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonProcessorBuilder builder = JsonProcessorBuilder.initWritingProcessor(getNumbersFile(), outputStream);
+        JsonProcessorBuilder builder = JsonProcessorBuilder.initBuilder(getNumbersFile(), outputStream);
 
         AtomicReference<String> usernameRef = new AtomicReference<>();
-        try (JsonVisitingProcessor visitingProcessor = builder.getVisitingProcessor()) {
+        try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
                     JsonVisitor.withTransformer(builder.consume(USERNAME_PATH, String.class, s -> usernameRef.set(s.getElement())))
             );
@@ -90,10 +90,10 @@ public class NumbersLibraryTest {
     @Test
     void shouldReadAllNumbersAndWriteToOutputStream() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonProcessorBuilder builder = JsonProcessorBuilder.initWritingProcessor(getNumbersFile(), outputStream);
+        JsonProcessorBuilder builder = JsonProcessorBuilder.initBuilder(getNumbersFile(), outputStream);
 
         List<Integer> numbersArray = new ArrayList<>();
-        try (JsonVisitingProcessor visitingProcessor = builder.getVisitingProcessor()) {
+        try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
                     JsonVisitor.withTransformer(builder.readAll(NUMBERS_PATH, Integer.class, nrs -> numbersArray.addAll(nrs.getElement())))
             );
@@ -107,10 +107,10 @@ public class NumbersLibraryTest {
     @Test
     void shouldConsumeAllNumbersAndNotWriteToOutputStream() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonProcessorBuilder builder = JsonProcessorBuilder.initWritingProcessor(getNumbersFile(), outputStream);
+        JsonProcessorBuilder builder = JsonProcessorBuilder.initBuilder(getNumbersFile(), outputStream);
 
         List<Integer> numbersArray = new ArrayList<>();
-        try (JsonVisitingProcessor visitingProcessor = builder.getVisitingProcessor()) {
+        try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
                     JsonVisitor.withTransformer(builder.consumeAll(NUMBERS_PATH, Integer.class, nrs -> numbersArray.addAll(nrs.getElement())))
             );
@@ -125,9 +125,9 @@ public class NumbersLibraryTest {
     @Test
     void shouldAddPlusOneToEachNumber() throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonProcessorBuilder builder = JsonProcessorBuilder.initWritingProcessor(getNumbersFile(), outputStream);
+        JsonProcessorBuilder builder = JsonProcessorBuilder.initBuilder(getNumbersFile(), outputStream);
 
-        try (JsonVisitingProcessor visitingProcessor = builder.getVisitingProcessor()) {
+        try (VisitJsonProcessor visitingProcessor = builder.build()) {
             visitingProcessor.visit(
                     JsonVisitor.withTransformer(builder.mapEach(NUMBERS_ARRAY_PATH, Integer.class, nr -> nr + 1))
             );

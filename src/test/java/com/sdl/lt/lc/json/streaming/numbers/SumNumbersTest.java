@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdl.lt.lc.json.streaming.JsonProcessorBuilder;
-import com.sdl.lt.lc.json.streaming.JsonReadingProcessor;
+import com.sdl.lt.lc.json.streaming.ReadJsonProcessor;
 import com.sdl.lt.lc.json.streaming.matchers.PathMatcher;
 import com.sdl.lt.lc.json.streaming.matchers.PathMatcherBuilder;
 import com.sdl.lt.lc.json.streaming.numbers.model.MyNumbers;
@@ -28,12 +28,12 @@ class SumNumbersTest {
     void shouldSumUpNumbersLibraryOnly() {
         InputStream numbersFile = getNumbersFile();
 
-        JsonReadingProcessor readingProcessor = JsonProcessorBuilder.initReadingProcessor(numbersFile);
+        ReadJsonProcessor readingProcessor = JsonProcessorBuilder.initProcessor(numbersFile);
         PathMatcher pathMatcher = PathMatcherBuilder.builder()
                 .field("numbers").startArray()
                 .build();
 
-        Iterator<Integer> numbersIterator = readingProcessor.readValuesAs(pathMatcher, Integer.class);
+        Iterator<Integer> numbersIterator = readingProcessor.readValues(pathMatcher, Integer.class);
 
         long total = 0;
         while (numbersIterator.hasNext()) {
